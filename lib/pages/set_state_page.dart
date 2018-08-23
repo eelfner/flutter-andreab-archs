@@ -56,6 +56,8 @@ class SetStatePageState extends State<SetStatePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("SetStatePageState.build()");
+
     return Scaffold(
       appBar: AppBar(
         title: Text('setState'),

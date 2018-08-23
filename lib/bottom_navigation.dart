@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:andreab_archs/database.dart';
+import 'package:andreab_archs/pages/set_state_page.dart';
+
+//import 'package:scoped_model/scoped_model.dart';
+import 'package:andreab_archs/pages/scoped_model_page.dart';
+
+import 'package:andreab_archs/pages/streams_page.dart';
+
+
 //import 'package:redux/redux.dart';
 //import 'package:flutter_redux/flutter_redux.dart';
-//import 'package:scoped_model/scoped_model.dart';
-import 'package:andreab_archs/database.dart';
 //import 'package:andreab_archs/pages/redux_page.dart';
-//import 'package:andreab_archs/pages/scoped_model_page.dart';
-import 'package:andreab_archs/pages/set_state_page.dart';
-//import 'package:andreab_archs/pages/streams_page.dart';
 
 enum TabItem {
   setState,
@@ -73,13 +77,18 @@ class BottomNavigationState extends State<BottomNavigation> {
     switch (currentItem) {
       case TabItem.setState:
         return SetStatePage(database: database);
-//      case TabItem.streams:
-//        return StreamsPage(database: database, stream: stream);
-//      case TabItem.scoped:
+
+      case TabItem.streams:
+        return StreamsPage(database: database);
+
+      case TabItem.scoped:
+        return ScopedModelPage(database: database);
+
 //        return ScopedModel<CountersModel>(
-//          model: CountersModel(stream: stream),
+//          model: CountersModel(stream: database.readCountersStream()),
 //          child: ScopedModelPage(database: database),
 //          );
+
 //      case TabItem.redux:
 //        var middleware = CountersMiddleware(database: database, stream: stream);
 //        var store = Store<ReduxModel>(
