@@ -8,24 +8,29 @@
 // Change to use Firestore rather than Realtime DB
 // Previously, AppDatabase object was referenced.
 // Remove NodeStream and NodeParser which are no longer needed.
+
+
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CounterData {
-  final String id;
-  int value;
+  static CounterData newUnsavedCounter = CounterData(id: null, value: 0); // Convenience
+
+  final String docId;
+  int value = 0;
 
   CounterData({String id, int value}):
-        id = id ?? DateTime.now().toUtc().toIso8601String(),
+        docId = id ?? DateTime.now().toUtc().toIso8601String(),
         value = value ?? 0;
 
   // Firebase convenience methods
-  CounterData._fromMap({Map<String, dynamic> map}):
-    id = map["id"],
+  CounterData._fromMap({String id, Map<String, dynamic> map}):
+    this.docId = id,
     value = map["value"];
 
   Map<String, dynamic> _toMap() {
-    return {"id" : id, "value" : value};
+    return {"value" : value};
   }
 }
 
@@ -44,8 +49,9 @@ class AppDatabase implements Database {
 
   @override
   Future<CounterData> createCounter() async {
-    CounterData newCounterData = CounterData();
-    await _counterCollectionRef.document(newCounterData.id).setData(newCounterData._toMap());
+    DocumentReference newDocRef = await _counterCollectionRef.add(CounterData.newUnsavedCounter._toMap());
+    DocumentSnapshot documentSnapshot = await newDocRef.get();
+    CounterData newCounterData = CounterData._fromMap(id: documentSnapshot.documentID, map: documentSnapshot.data);
     return newCounterData;
     // Note: Don't actually have to await here. Could just return. Also, if you await here and
     // an auto-generated key is used, it will be available by reading the returned document reference.
@@ -60,17 +66,18 @@ class AppDatabase implements Database {
   // Handler that converts generic Firestore Snapshot to List<CounterData>.
   _handleCounterData(QuerySnapshot snapshot, EventSink<List<CounterData>> eventSink) {
     List<CounterData> counterList = [];
-    snapshot.documents.forEach((DocumentSnapshot d) => counterList.add(CounterData._fromMap(map: d.data)));
+    snapshot.documents.forEach((DocumentSnapshot d) => counterList.add(CounterData._fromMap(id: d.documentID, map: d.data)));
     eventSink.add(counterList);
+    print("handler: List size: ${counterList.length}");
   }
 
   @override
   Future<void> updateCounter(CounterData counter) async {
-    await _counterDocumentRef(counter.id).setData(counter._toMap());
+    await _counterDocumentRef(counter.docId).setData(counter._toMap());
   }
 
   @override
   Future<void> deleteCounter(CounterData counter) async {
-    await _counterDocumentRef(counter.id).delete();
+    await _counterDocumentRef(counter.docId).delete();
   }
 }
