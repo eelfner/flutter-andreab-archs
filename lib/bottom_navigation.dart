@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:andreab_archs/database.dart';
 import 'package:andreab_archs/pages/set_state_page.dart';
 
-//import 'package:scoped_model/scoped_model.dart';
 import 'package:andreab_archs/pages/scoped_model_page.dart';
-
 import 'package:andreab_archs/pages/streams_page.dart';
-
-
-//import 'package:redux/redux.dart';
-//import 'package:flutter_redux/flutter_redux.dart';
-//import 'package:andreab_archs/pages/redux_page.dart';
+import 'package:andreab_archs/pages/redux_page.dart';
 
 enum TabItem {
   setState,
@@ -83,6 +77,9 @@ class BottomNavigationState extends State<BottomNavigation> {
 
       case TabItem.scoped:
         return ScopedModelPage(database: database);
+
+      case TabItem.redux:
+        return ReduxPage(database: database);
 
 //        return ScopedModel<CountersModel>(
 //          model: CountersModel(stream: database.readCountersStream()),

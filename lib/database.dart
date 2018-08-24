@@ -51,7 +51,7 @@ class AppDatabase implements Database {
     _counterCollectionRef.add(CounterData.newUnsavedCounter._toMap());
   }
 
-  // The Firestore data stream is converted to a more usable Stream of List<Counter> objects.
+  // The Firestore data stream is converted to a more usable Stream of List<CounterData> objects.
   @override
   Stream<List<CounterData>> readCountersStream() {
     Stream<QuerySnapshot> firestoreSteam = _counterCollectionRef.snapshots();
@@ -89,20 +89,6 @@ class AppDatabase implements Database {
 //    return newCounterData;
 //    // Note: Don't actually have to await here. Could just return. Also, if you await here and
 //    // an auto-generated key is used, it will be available by reading the returned document reference.
-//  }
-//
-//  // The Firestore data stream is converted to a more usable Stream of List<Counter> objects.
-//  @override
-//  Stream<List<CounterData>> readCountersStream() {
-//    Stream<QuerySnapshot> firestoreSteam = _counterCollectionRef.snapshots();
-//    return firestoreSteam.transform(StreamTransformer.fromHandlers(handleData: _handleCounterData));
-//  }
-//  // Handler that converts generic Firestore Snapshot to List<CounterData>.
-//  _handleCounterData(QuerySnapshot snapshot, EventSink<List<CounterData>> eventSink) {
-//    List<CounterData> counterList = [];
-//    snapshot.documents.forEach((DocumentSnapshot d) => counterList.add(CounterData._fromMap(id: d.documentID, map: d.data)));
-//    eventSink.add(counterList);
-//    print("handler: List size: ${counterList.length}");
 //  }
 //
 //  @override
