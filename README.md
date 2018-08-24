@@ -27,19 +27,19 @@ Tensor Programming](https://www.youtube.com/watch?v=OJ_u34bD_q8)
 
 ## Description of differences between Implementations
 
-####SetState Example - ListItemsBuilder
+#### SetState Example - ListItemsBuilder
  - Stateful Widget
  - Listens to Stream of Counters (CounterValues) triggered by Firestore
  - Subscribe and call setState() when triggered
  - Uses ListItemsBuilder
 
-####Streams Example - StreamBuilder
+#### Streams Example - StreamBuilder
  - Stateless Widget
  - Uses StreamBuilder that will automatically build based on snapshot of stream
  - Fairly similar to above SetState, but no longer need to manage subscriptions and call SetState
  - No state management required.
 
-####ScopedModel Example - ScopedModel
+#### ScopedModel Example - ScopedModel
 1) Create Model (part of ScopedModel library) that holds data list
 1) On update to list, call notifyListeners(). In this case, the stream from firestore is used
    both to get the current data list, and to determine when there are updates.
@@ -47,5 +47,5 @@ Tensor Programming](https://www.youtube.com/watch?v=OJ_u34bD_q8)
  - Now when the model sees and update, it calls notifyListeners() which will trigger the UI to rebuild.
  - This allows you to remove model state out of the widget.
 
-####Redux Example
+#### Redux Example
  - Made to work, but discussion is beyond scope of this effort.
